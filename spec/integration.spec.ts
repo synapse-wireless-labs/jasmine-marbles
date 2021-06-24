@@ -113,4 +113,11 @@ describe('Integration', () => {
 
     expect(provided).not.toBeObservable(expected);
   });
+
+  it('should support jasmine.anything()', () => {
+    const provided = cold('a', { a: { someProp: 3 } });
+    const expected = cold('a', { a: jasmine.anything() });
+
+    expect(provided).toBeObservable(expected);
+  });
 });

@@ -7,7 +7,6 @@ import {
   Subscription,
 } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { isEqual } from 'lodash';
 
 import {
   getTestScheduler,
@@ -126,7 +125,7 @@ export function addMatchers() {
         return { pass: true };
       },
     }),
-    toBeObservable: (_utils, _equalityTester) => ({
+    toBeObservable: (utils, _equalityTester) => ({
       compare: function (actual: TestObservable, fixture: TestObservable) {
         const results: TestMessages = [];
         let subscription: Subscription;
@@ -183,14 +182,14 @@ export function addMatchers() {
           true,
         );
 
-        if (isEqual(results, expected)) {
+        if (utils.equals(results, expected)) {
           return { pass: true };
         }
 
         const mapNotificationToSymbol = buildNotificationToSymbolMapper(
           fixture.marbles,
           expected,
-          isEqual,
+          (a: any, b: any) => utils.equals(a, b),
         );
         const receivedMarble = unparseMarble(results, mapNotificationToSymbol);
 
